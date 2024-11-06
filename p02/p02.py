@@ -63,14 +63,14 @@ class IsingModel:
 
     def run_simulation(self, n_steps, image_prefix=None, animation_prefix=None, magnetization_prefix=None):
         frames = []
+        magnetizations = []
         if image_prefix or animation_prefix:
             image = self.get_image()
             frames.append(image)
             if image_prefix:
                 image.save(image_prefix + '0.png')
         if magnetization_prefix:
-            with open(magnetization_prefix + '.txt', 'w') as file:
-                file.write('0 ' + str(self.get_magnetization()) + '\n')
+            magnetizations.append([0, self.get_magnetization()])
         for step in tqdm.tqdm(range(1, n_steps+1)):
             self.update()
             if image_prefix or animation_prefix:
@@ -79,10 +79,15 @@ class IsingModel:
                 if image_prefix:
                     image.save(image_prefix + str(step) + '.png')
             if magnetization_prefix:
-                with open(magnetization_prefix + '.txt', 'a') as file:
-                    file.write(str(step) + ' ' + str(self.get_magnetization()) + '\n')
+                magnetizations.append([step, self.get_magnetization()])
         if animation_prefix:
+            print('Saving animation...')
             frames[0].save(animation_prefix + '.gif', save_all=True, append_images=frames[1:], duration=100, loop=0)
+        if magnetization_prefix:
+            with open(magnetization_prefix + '.txt', 'w') as f:
+                f.write('# step magnetization\n')
+                for step, magnetization in magnetizations:
+                    f.write(f'{step} {magnetization}\n')
 
 model = IsingModel(args.size, args.J, args.B, args.beta, args.spin_density)
 model.run_simulation(args.n_steps, args.image_prefix, args.animation_prefix, args.magnetization_prefix)
