@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "pwzn-projekty"
+version = "0.1.0"
+description = "Projekty na Python w Zastosowaniach Naukowych"
+authors = ["Mateusz Ślusarczyk <slusarczyk.mat@gmail.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+rich = "^13.9.2"
+ascii_graph = "^1.5.1"
+tqdm = "^4.66.5"
+pillow = "^11.0.0"
+numpy = "^2.1.2"
+scipy = "^1.14.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
